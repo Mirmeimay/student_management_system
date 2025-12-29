@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Portal - Courses</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #f5f6fa;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dark-mode {
+            background-color: #1c1e21;
+            color: #e9ecef;
+        }
+
+        .hover-highlight tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .clickable-row {
+            cursor: pointer;
+        }
+
+        .clickable-row td:first-child::before {
+            content: "▸ ";
+            color: #0d6efd;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            padding: 0.4em 0.7em;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .badge-active {
+            background-color: #198754;
+        }
+
+        .badge-probation {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .badge-inactive {
+            background-color: #dc3545;
+        }
+
+        .expandable-row {
+            display: none;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .expandable-row td {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            margin-top: 60px;
+            background: #212529;
+            padding: 15px;
+            color: white;
+            text-align: center;
+        }
+        .navbar .nav-link {
+    font-weight: 500;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+}
+
+.navbar .nav-link.active,
+.navbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+    </style>
+</head>
+
+<body>
+
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+    <div class="container-fluid px-4">
+
+       
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="dashboard.html">
+            <i class="bi bi-mortarboard-fill me-2"></i>
+            University Portal
+        </a>
+
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+       
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-2">
+
+                 <li class="nav-item">
+                    <a class="nav-link" href="menu.html">
+                       <i class="bi bi-grid-fill me-1"></i> Menu
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.html">
+                        <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="students.html">
+                        <i class="bi bi-people me-1"></i> Students
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="lectures.html">
+                        <i class="bi bi-person-video3 me-1"></i> Lecturers
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="courses.html">
+                        <i class="bi bi-journal-text me-1"></i> Courses
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="faculty.html">
+                        <i class="bi bi-building me-1"></i> Faculty
+                    </a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="form-check form-switch text-white">
+                    <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                    <label class="form-check-label small">Dark</label>
+                </div>
+
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                       href="#" data-bs-toggle="dropdown">
+
+                        <span class="d-none d-lg-inline">Admin</span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <li>
+                            <a class="dropdown-item" href="profile.html">
+                                <i class="bi bi-person me-2"></i> Profile
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="login.html">
+                                <i class="bi bi-box-arrow-right me-2"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container py-4">
+        <h2 class="text-center fw-bold">Courses Directory — 2024/2025</h2>
+
+<div class="row text-center mb-4 g-3">
+    <div class="col-md-3 col-6">
+        <div class="card bg-primary text-white p-3 shadow-sm card-hover">
+            <i class="bi bi-journal-bookmark-fill fs-2"></i>
+            <h3 class="fw-bold mb-0" id="totalCourses">0</h3>
+            <small class="opacity-75">Total Courses</small>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+        <div class="card bg-success text-white p-3 shadow-sm card-hover">
+            <i class="bi bi-people-fill fs-2"></i>
+            <h3 class="fw-bold mb-0" id="totalStudents">0</h3>
+            <small class="opacity-75">Total Students</small>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+        <div class="card bg-warning text-dark p-3 shadow-sm card-hover">
+            <i class="bi bi-person-lines-fill fs-2"></i>
+            <h3 class="fw-bold mb-0" id="avgStudents">0</h3>
+            <small class="opacity-75">Avg Students / Course</small>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+        <div class="card bg-danger text-white p-3 shadow-sm card-hover">
+            <i class="bi bi-award-fill fs-2"></i>
+            <h3 class="fw-bold mb-0" id="topCourse">—</h3>
+            <small class="opacity-75">Highest Enrollment</small>
+        </div>
+    </div>
+</div>
+
+        <div class="row mb-3 g-3">
+            <div class="col-md-6">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search by Code, Name, Lecturer">
+            </div>
+            <div class="col-md-6 text-end">
+                <button id="downloadCSV" class="btn btn-outline-primary"><i class="bi bi-download"></i> Download CSV</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover hover-highlight" id="coursesTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th onclick="sortTable(0)">Course Code</th>
+                        <th onclick="sortTable(1)">Course Name</th>
+                        <th onclick="sortTable(2)">Credits</th>
+                        <th onclick="sortTable(3)">Lecturer</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS101</td>
+    <td>Programming</td>
+    <td><span class="badge-credits badge-3">3</span></td>
+    <td>Dr. Ahmad Fauzi</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 1 | 🕒 Mon/Wed 10:00–12:00 | 🏫 Room: LAB1
+        👥 Students: <strong data-students="45">45</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS102</td>
+    <td>Data Structures</td>
+    <td><span class="badge-credits badge-4">4</span></td>
+    <td>Prof. Siti Aminah</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 2 | 🕒 Tue/Thu 09:00–11:00 | 🏫 Room: LAB2
+        👥 Students: <strong data-students="45">45</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS201</td>
+    <td>Database Systems</td>
+    <td><span class="badge-credits badge-3">3</span></td>
+    <td>Dr. Lee Wei</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 3 | 🕒 Mon/Wed 14:00–16:00 | 🏫 Room: LAB3
+        👥 Students: <strong data-students="45">45</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS202</td>
+    <td>Web Development</td>
+    <td><span class="badge-credits badge-4">4</span></td>
+    <td>Nurul Huda</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 4 | 🕒 Tue/Thu 10:00–12:00 | 🏫 Room: LAB4
+        👥 Students: <strong data-students="45">45</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS301</td>
+    <td>Software Engineering</td>
+    <td><span class="badge-credits badge-5">5</span></td>
+    <td>Dr. Mohd Zikri</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 5 | 🕒 Mon/Wed 08:00–10:00 | 🏫 Room: LAB5
+        👥 Students: <strong data-students="45">45</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS302</td>
+    <td>Artificial Intelligence</td>
+    <td><span class="badge-credits badge-4">4</span></td>
+    <td>Aisyah Farah</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 6 | 🕒 Tue/Thu 13:00–15:00 | 🏫 Room: LAB6
+        👥 Students: <strong data-students="45">45</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS401</td>
+    <td>Cybersecurity</td>
+    <td><span class="badge-credits badge-3">3</span></td>
+    <td>Tan Wei Ling</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 7 | 🕒 Mon/Wed 16:00–18:00 | 🏫 Room: LAB7
+        👥 Students: <strong data-students="45">45</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS402</td>
+    <td>Mobile App Development</td>
+    <td><span class="badge-credits badge-4">4</span></td>
+    <td>Farhan Hakim</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 8 | 🕒 Tue/Thu 14:00–16:00 | 🏫 Room: LAB8
+        👥 Students: <strong data-students="45">45</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS403</td>
+    <td>Machine Learning</td>
+    <td><span class="badge-credits badge-4">4</span></td>
+    <td>Dr. Lim Wei</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 6 | 🕒 Mon/Wed 12:00–14:00 | 🏫 Room: LAB9
+        👥 Students: <strong data-students="40">40</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS404</td>
+    <td>Computer Networks</td>
+    <td><span class="badge-credits badge-3">3</span></td>
+    <td>Dr. Sarah Tan</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 5 | 🕒 Tue/Thu 08:00–10:00 | 🏫 Room: LAB10
+        👥 Students: <strong data-students="42">42</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS405</td>
+    <td>Operating Systems</td>
+    <td><span class="badge-credits badge-4">4</span></td>
+    <td>Prof. Michael Ong</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 4 | 🕒 Mon/Wed 09:00–11:00 | 🏫 Room: LAB11
+        👥 Students: <strong data-students="50">50</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS406</td>
+    <td>Cloud Computing</td>
+    <td><span class="badge-credits badge-3">3</span></td>
+    <td>Dr. Amir Hassan</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 7 | 🕒 Tue/Thu 10:00–12:00 | 🏫 Room: LAB12
+        👥 Students: <strong data-students="38">38</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS407</td>
+    <td>Software Testing</td>
+    <td><span class="badge-credits badge-3">3</span></td>
+    <td>Dr. Aishah</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 5 | 🕒 Mon/Wed 13:00–15:00 | 🏫 Room: LAB13
+        👥 Students: <strong data-students="35">35</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS408</td>
+    <td>Human-Computer Interaction</td>
+    <td><span class="badge-credits badge-2">2</span></td>
+    <td>Prof. Nadia Lee</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 3 | 🕒 Tue/Thu 12:00–14:00 | 🏫 Room: LAB14
+        👥 Students: <strong data-students="28">28</strong>
+    </td>
+</tr>
+
+<tr class="clickable-row" onclick="toggleRow(this)">
+    <td>CS409</td>
+    <td>Game Development</td>
+    <td><span class="badge-credits badge-4">4</span></td>
+    <td>Dr. Hanif</td>
+</tr>
+<tr class="expandable-row">
+    <td colspan="4">
+        📘 Semester: 6 | 🕒 Mon/Wed 15:00–17:00 | 🏫 Room: LAB15
+        👥 Students: <strong data-students="40">40</strong>
+    </td>
+</tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <p id="noResult" class="text-center text-muted d-none mt-3">
+            🔍 No course found. Try adjusting your search or filters.
+        </p>
+
+        <p class="text-center text-muted">
+         Tip: Rows with arrows are clickable to reveal course details
+        </p>
+    </div>
+
+
+    <footer>
+        © 2025 University Portal • IMS566 Project • 
+    </footer>
+
+<script>
+
+    const toggle = document.getElementById('darkModeToggle');
+    toggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark-mode');
+    });
+
+
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('coursesTable').getElementsByTagName('tbody')[0];
+
+    searchInput.addEventListener('keyup', () => {
+        const filter = searchInput.value.toLowerCase();
+        Array.from(table.rows).forEach(row => {
+            if (row.classList.contains('expandable-row')) return;
+
+            let match = false;
+            Array.from(row.cells).forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(filter)) match = true;
+            });
+
+            row.style.display = match ? '' : 'none';
+            if (row.nextElementSibling && row.nextElementSibling.classList.contains('expandable-row')) {
+                row.nextElementSibling.style.display = 'none';
+            }
+        });
+    });
+
+
+    function toggleRow(row) {
+        const nextRow = row.nextElementSibling;
+        if (nextRow && nextRow.classList.contains('expandable-row')) {
+            nextRow.style.display =
+                nextRow.style.display === 'table-row' ? 'none' : 'table-row';
+        }
+    }
+
+
+    function sortTable(n) {
+        let switching = true;
+        const tableElem = document.getElementById("coursesTable");
+        let dir = "asc";
+        let switchcount = 0;
+
+        while (switching) {
+            switching = false;
+            const rows = tableElem.rows;
+
+            for (let i = 1; i < rows.length - 2; i += 2) {
+                let shouldSwitch = false;
+                const x = rows[i].cells[n].textContent.toLowerCase();
+                const y = rows[i + 2].cells[n].textContent.toLowerCase();
+
+                if (dir === "asc" && x > y) shouldSwitch = true;
+                if (dir === "desc" && x < y) shouldSwitch = true;
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 2], rows[i]);
+                    rows[i].parentNode.insertBefore(rows[i + 3], rows[i + 1]);
+                    switching = true;
+                    switchcount++;
+                    break;
+                }
+            }
+
+            if (switchcount === 0 && dir === "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
+
+
+    function calculateSummary() {
+        const studentElements = document.querySelectorAll('[data-students]');
+        const totalCourses = studentElements.length;
+
+        let totalStudents = 0;
+        let maxStudents = 0;
+        let topCourse = '';
+
+        studentElements.forEach(el => {
+            const students = parseInt(el.dataset.students);
+            totalStudents += students;
+
+            if (students > maxStudents) {
+                maxStudents = students;
+                topCourse = el.closest('tr')
+                    .previousElementSibling
+                    .cells[1].textContent;
+            }
+        });
+
+        document.getElementById('totalCourses').textContent = totalCourses;
+        document.getElementById('totalStudents').textContent = totalStudents;
+        document.getElementById('avgStudents').textContent =
+            Math.round(totalStudents / totalCourses);
+        document.getElementById('topCourse').textContent = topCourse;
+    }
+
+    calculateSummary();
+
+    document.getElementById("downloadCSV").addEventListener("click", () => {
+        let csv = [];
+        const rows = table.querySelectorAll("tr:not(.expandable-row)");
+
+        rows.forEach(row => {
+            const cols = row.querySelectorAll("td");
+            const rowData = Array.from(cols).map(td =>
+                td.textContent.replace(/\n/g, '').trim()
+            );
+            csv.push(rowData.join(","));
+        });
+
+        const blob = new Blob([csv.join("\n")], { type: "text/csv" });
+        const link = document.createElement("a");
+        link.download = "courses.csv";
+        link.href = window.URL.createObjectURL(blob);
+        link.click();
+    });
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

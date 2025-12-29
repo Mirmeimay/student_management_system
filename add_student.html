@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Student | Student Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+body {
+    background: #f4f6f9;
+}
+.card {
+    border-radius: 16px;
+}
+.required::after {
+    content: " *";
+    color: red;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold" href="menu.html">
+            <i class="bi bi-mortarboard-fill me-2"></i> Student Management System
+        </a>
+    </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow">
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-1">
+                        <i class="bi bi-person-plus-fill me-2"></i>Add New Student
+                    </h4>
+                    <p class="text-muted mb-4">
+                        Fill in the student information below
+                    </p>
+
+                    <div id="alertSuccess" class="alert alert-success d-none">
+                        <i class="bi bi-check-circle me-1"></i> Student added successfully
+                    </div>
+
+                    <div id="alertError" class="alert alert-danger d-none"></div>
+
+                    <form id="studentForm">
+
+                        <!-- ===== Academic Info ===== -->
+                        <h6 class="text-primary fw-bold mb-3">
+                            <i class="bi bi-book me-1"></i> Academic Information
+                        </h6>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label required">Student ID</label>
+                                <input id="studentid" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label required">Full Name</label>
+                                <input id="fullname" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label required">Faculty</label>
+                                <input id="faculty" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label required">Program</label>
+                                <input id="program" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label required">Year</label>
+                                <select id="year" class="form-select" required>
+                                    <option value="">Select Year</option>
+                                    <option>Year 1</option>
+                                    <option>Year 2</option>
+                                    <option>Year 3</option>
+                                    <option>Year 4</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- ===== Contact Info ===== -->
+                        <h6 class="text-primary fw-bold mb-3">
+                            <i class="bi bi-telephone me-1"></i> Contact Information
+                        </h6>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label required">Email</label>
+                                <input type="email" id="email" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label required">Phone</label>
+                                <input id="phone" class="form-control" pattern="[0-9]{10,11}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label required">Address</label>
+                                <textarea id="address" class="form-control" rows="3" required></textarea>
+                            </div>
+                        </div>
+
+                        <!-- ===== ACTIONS ===== -->
+                        <div class="d-flex justify-content-between">
+                            <a href="students.html" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back
+                            </a>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-save"></i> Save Student
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-dark text-white text-center py-3">
+    © 2025 Student Management System • IMS566 Project
+</footer>
+
+<script>
+const form = document.getElementById("studentForm");
+const alertSuccess = document.getElementById("alertSuccess");
+const alertError = document.getElementById("alertError");
+
+form.addEventListener("submit", e => {
+    e.preventDefault();
+    alertSuccess.classList.add("d-none");
+    alertError.classList.add("d-none");
+
+    const student = {
+        id: studentid.value.trim(),
+        name: fullname.value.trim(),
+        faculty: faculty.value.trim(),
+        program: program.value.trim(),
+        year: year.value,
+        email: email.value.trim(),
+        phone: phone.value.trim(),
+        address: address.value.trim()
+    };
+
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+
+    if (students.some(s => s.id === student.id)) {
+        alertError.textContent = "Student ID already exists.";
+        alertError.classList.remove("d-none");
+        return;
+    }
+
+    students.push(student);
+    localStorage.setItem("students", JSON.stringify(students));
+
+    alertSuccess.classList.remove("d-none");
+    form.reset();
+
+    setTimeout(() => location.href = "students.html", 1000);
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
